@@ -1,0 +1,12 @@
+{
+  "login": "Login",
+  "username": "Username",
+  "password": "Password",
+  "realtorPlatform": "Realtor Platform",
+  "isRequired": "is required",
+  "filterHouses": "Filter Houses",
+  "searchByTitleOrLocation": "Search by title or location...",
+  "availableHouses": "Available Houses",
+  "noHousesFound": "No houses found",
+   "priceRange": "Price Range"
+}

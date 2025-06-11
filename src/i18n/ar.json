@@ -1,0 +1,12 @@
+{
+  "login": "تسجيل الدخول",
+  "username": "اسم المستخدم",
+  "password": "كلمة المرور",
+  "realtorPlatform": "منصة الوساطة",
+  "isRequired": "مطلوب",
+  "filterHouses": "تصفية العقارات",
+  "searchByTitleOrLocation": "البحث بالعنوان أو الموقع...",
+  "availableHouses": "العقارات المتاحة",
+  "noHousesFound": "لا توجد عقارات",
+   "priceRange": "نطاق السعر"
+}
