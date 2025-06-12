@@ -12,13 +12,14 @@ export const useAuth = () => {
   const login = async (credentials: LoginRequest) => {
     setIsPending(true);
     setError(null);
+    
 
     try {
       const token = await loginUser(credentials);
       localStorage.setItem('token', token);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || 'loginFailed');
     } finally {
       setIsPending(false);
     }

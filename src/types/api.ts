@@ -2,4 +2,3 @@
     data: T;
     totalCount?: number
   };
-  

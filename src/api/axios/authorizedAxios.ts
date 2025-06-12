@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const authorizedAxios = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'https://api.example.com',
+    baseURL: import.meta.env.VITE_API_BASE_URL + 'api/v1/',
 });
 
 authorizedAxios.interceptors.request.use((config) => {
@@ -15,7 +15,7 @@ authorizedAxios.interceptors.request.use((config) => {
 authorizedAxios.interceptors.response.use(
     response => response,
     error => {
-        if (error.response?.status === 401) {
+        if (error.response?.status === 401 || error.response?.status === 403) {
             localStorage.removeItem('token');
             window.location.href = '/login';
         }

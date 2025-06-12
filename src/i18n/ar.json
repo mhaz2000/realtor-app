@@ -5,8 +5,10 @@
   "realtorPlatform": "منصة الوساطة",
   "isRequired": "مطلوب",
   "filterHouses": "تصفية العقارات",
-  "searchByTitleOrLocation": "البحث بالعنوان أو الموقع...",
+  "searchByAI": "البحثالبحث حسب قوة الذكاء الاصطناعي...",
   "availableHouses": "العقارات المتاحة",
   "noHousesFound": "لا توجد عقارات",
-   "priceRange": "نطاق السعر"
+  "priceRange": "نطاق السعر",
+  "loginFailed": "فشل تسجيل الدخول",
+  "ai_assistant": "مساعد الذكاء الاصطناعي"
 }

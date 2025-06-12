@@ -5,8 +5,10 @@
   "realtorPlatform": "Realtor Platform",
   "isRequired": "is required",
   "filterHouses": "Filter Houses",
-  "searchByTitleOrLocation": "Search by title or location...",
+  "searchByAI": "Search by AI Power ...",
   "availableHouses": "Available Houses",
   "noHousesFound": "No houses found",
-   "priceRange": "Price Range"
+  "priceRange": "Price Range",
+  "loginFailed": "Login failed",
+  "ai_assistant": "AI Assistant"
 }

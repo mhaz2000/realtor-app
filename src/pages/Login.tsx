@@ -24,7 +24,7 @@ const Login = () => {
       >
         <h2 className="text-3xl font-semibold text-center text-blue-600">{t('login')}</h2>
 
-        {error && <p className="text-red-600 text-center text-sm">{error}</p>}
+        {error && <p className="text-red-600 text-center text-sm">{t(error)}</p>}
 
         <Input
           label={t('username')}
