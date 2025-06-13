@@ -10,5 +10,18 @@
   "noHousesFound": "No houses found",
   "priceRange": "Price Range",
   "loginFailed": "Login failed",
-  "ai_assistant": "AI Assistant"
+  "send": "Send",
+  "type": "Type",
+  "floor": "Floor",
+  "area": "Area",
+  "view": "View",
+  "completion": "Completion",
+  "pirce": "price",
+  "previous": "Previous",
+  "next": "Next",
+  "page": "Page",
+  "no_houses_found": "No houses found.",
+  "ai_assistant": "AI Assistant",
+  "start_typing": "Start typing your question...",
+  "type_here": "Type here..."
 }

@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getPriceRange } from '../../api/units';
-import { Bot } from 'lucide-react';
 
 type HouseFilterProps = {
   minPrice: number | null;
   maxPrice: number | null;
   onPriceChange: (min: number | null, max: number | null) => void;
-  setIsOpen: (status: boolean) => void
 };
 
 const HouseFilter = ({
   minPrice,
   maxPrice,
   onPriceChange,
-  setIsOpen
 }: HouseFilterProps) => {
   const { t, i18n } = useTranslation();
   const dir = i18n.dir();
@@ -86,7 +83,7 @@ const HouseFilter = ({
   return (
     <aside
       className={`
-        h-screen w-full sm:w-1/4 p-4 bg-white rounded shadow
+        h-h-[calc(h-screen-64px)] w-full sm:w-1/4 p-4 bg-white rounded shadow
         ${dir === 'rtl' ? 'sm:order-2' : 'sm:order-1'}
       `}
     >
@@ -100,7 +97,7 @@ const HouseFilter = ({
             <input
               type="number"
               value={tempMin}
-              placeholder={`${range.min_price}`}
+              placeholder={`${range.min_price.toLocaleString()}`}
               onChange={(e) => setTempMin(e.target.value)}
               onBlur={handleMinBlur}
               className="w-full border rounded p-2"
@@ -109,7 +106,7 @@ const HouseFilter = ({
             <input
               type="number"
               value={tempMax}
-              placeholder={`${range.max_price}`}
+              placeholder={`${range.max_price.toLocaleString()}`}
               onChange={(e) => setTempMax(e.target.value)}
               onBlur={handleMaxBlur}
               className="w-full border rounded p-2"
@@ -119,14 +116,7 @@ const HouseFilter = ({
       )}
 
 
-      <button
-        className={`fixed bottom-6 ${dir === 'rtl' ? 'left-6' : 'right-6'} z-50 ...`}
-        onClick={() => setIsOpen(true)}
-      >
-        <div className='p-3 bg-blue-600 rounded-full'>
-          <Bot className="w-6 h-6 text-white" />
-        </div>
-      </button>
+
 
       {/* <textarea
         placeholder={t('searchByAI')}

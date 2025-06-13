@@ -1,31 +1,28 @@
-import Modal from '../Modal';
 import { useTranslation } from 'react-i18next';
+import { Bot } from 'lucide-react';
+import { useState } from 'react';
+import ChatDrawer from '../ai/ChatDrawer';
+import ChatBot from '../ai/ChatBot';
 
-type HouseAiFilter = {
-  isOpen: boolean;
-  setIsOpen: (value: boolean) => void;
-  filter: string | null;
-  setFilter: (value: string) => void;
-}
-
-const AIAssistantModal = ({ isOpen, setIsOpen, filter, setFilter }: HouseAiFilter) => {
-  const { t } = useTranslation();
+const AIAssistantModal = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { i18n } = useTranslation();
+  const dir = i18n.dir();
 
   return (
     <>
-      {/* Floating Button */}
+      <button
+        className={`fixed bottom-6 ${dir === 'rtl' ? 'left-6' : 'right-6'} z-40`}
+        onClick={() => setIsOpen(true)}
+      >
+        <div className="p-3 bg-blue-600 rounded-full shadow-lg">
+          <Bot className="w-6 h-6 text-white" />
+        </div>
+      </button>
 
-
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <h2 className="text-xl font-semibold mb-4">{t('ai_assistant')}</h2>
-
-        <textarea
-          placeholder={t('searchByAI')}
-          value={filter ?? ''}
-          onChange={(e) => setFilter(e.target.value)}
-          className="w-full border border-gray-300 rounded p-2 mt-4 h-60"
-        />
-      </Modal>
+      <ChatDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} dir={dir}>
+        <ChatBot />
+      </ChatDrawer>
     </>
   );
 };

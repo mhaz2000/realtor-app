@@ -15,7 +15,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-lg p-6 max-w-lg w-full shadow-xl relative"
+        className="bg-white rounded-lg p-6 max-w-xl w-full shadow-xl relative"
         onClick={(e) => e.stopPropagation()} // prevent closing on modal body click
       >
         <button

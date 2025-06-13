@@ -10,5 +10,18 @@
   "noHousesFound": "لا توجد عقارات",
   "priceRange": "نطاق السعر",
   "loginFailed": "فشل تسجيل الدخول",
-  "ai_assistant": "مساعد الذكاء الاصطناعي"
+  "send": "انظر",
+  "type": "نوع",
+  "floor": "الطابق",
+  "area": "مساحة",
+  "view": "منظر",
+  "completion": "إكمال",
+  "price": "قيمة",
+  "previous": "السابق",
+  "next": "التالي",
+  "page": "الصفحة",
+  "no_houses_found": "لا توجد منازل مطابقة.",
+  "ai_assistant": "المساعد الذكي",
+  "start_typing": "ابدأ بكتابة سؤالك...",
+  "type_here": "اكتب هنا..."
 }
