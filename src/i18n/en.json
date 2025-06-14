@@ -23,5 +23,9 @@
   "no_houses_found": "No houses found.",
   "ai_assistant": "AI Assistant",
   "start_typing": "Start typing your question...",
-  "type_here": "Type here..."
+  "type_here": "Type here...",
+  "areaRange": "Area Range",
+  "floorRange": "Floor Range",
+  "unit_type": "Unit Type",
+  "All": "All"
 }

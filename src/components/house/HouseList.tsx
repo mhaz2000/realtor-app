@@ -7,57 +7,99 @@ import { useTranslation } from 'react-i18next';
 
 const HouseListPage = () => {
   const [units, setUnits] = useState<Unit[]>([]);
-  const [minPrice, setMinPrice] = useState<number | null>(null);
-  const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [filters, setFilters] = useState({
+    price: { min: null as number | null, max: null as number | null },
+    area: { min: null as number | null, max: null as number | null },
+    floor: { min: null as number | null, max: null as number | null },
+    unit_type: null as string | null,
+  });
+
+
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(false);
   const [t] = useTranslation();
 
-  const LIMIT = 6;
+  const [unitsLoading, setUintsLoading] = useState(true);
 
-  const fetchUnits = async (min: number | null, max: number | null, page: number) => {
-    if (min === null || max === null) return;
+  const updateRange = (
+    key: 'price' | 'area' | 'floor',
+    min: number | null,
+    max: number | null
+  ) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: { min, max },
+    }));
+    setPage(1); // reset pagination
+  };
 
+const updateUnitType = (value: string | null) => {
+  setFilters(prev => ({
+    ...prev,
+    unit_type: value === 'All' ? null : value,
+  }));
+};
+
+  const fetchUnits = async () => {
     const filter: UnitFilter = {
-      min_price: min,
-      max_price: max,
-      limit: LIMIT,
-      // page: page,
+      min_price: filters.price.min,
+      max_price: filters.price.max,
+      min_area: filters.area.min,
+      max_area: filters.area.max,
+      min_floor: filters.floor.min,
+      max_floor: filters.floor.max,
+      unit_type: filters.unit_type,
     };
 
     try {
-      const data = await searchUnits(filter);
-      setUnits(data);
-      setHasMore(data.length === LIMIT);
+      setUintsLoading(true);
+      const data = await searchUnits(filter, 6, (page - 1) * 6);
+      setUnits(data.units);
+      setHasMore(data.pagination.has_next);
     } catch (err) {
       console.error('Failed to fetch units:', err);
+    } finally {
+      setUintsLoading(false);
     }
   };
 
+
   useEffect(() => {
-    if (minPrice !== null && maxPrice !== null) {
-      fetchUnits(minPrice, maxPrice, page);
-    }
-  }, [minPrice, maxPrice, page]);
+    fetchUnits();
+  }, [filters, page]);
 
   const handleNext = () => setPage((prev) => prev + 1);
   const handlePrevious = () => setPage((prev) => Math.max(prev - 1, 1));
 
-  const handlePriceChange = (min: number | null, max: number | null) => {
-    setMinPrice(min);
-    setMaxPrice(max);
-    setPage(1); // Reset page when filter changes
-  };
 
   return (
     <div className="flex flex-col sm:flex-row gap-4">
       <HouseFilter
-        minPrice={minPrice}
-        maxPrice={maxPrice}
-        onPriceChange={handlePriceChange}
+        minPrice={filters.price.min}
+        maxPrice={filters.price.max}
+        minArea={filters.area.min}
+        maxArea={filters.area.max}
+        minFloor={filters.floor.min}
+        maxFloor={filters.floor.max}
+        selectedUnitType={filters.unit_type}
+        onPriceChange={(min, max) => updateRange('price', min, max)}
+        onAreaChange={(min, max) => updateRange('area', min, max)}
+        onFloorChange={(min, max) => updateRange('floor', min, max)}
+        onUnitTypeChange={(type) => updateUnitType(type)}
       />
-
-      <section className="flex-1">
+      {unitsLoading ? (
+        <section className="flex-1 p-4">
+          <div className="space-y-4 animate-pulse">
+            <div className="h-6 bg-gray-300 rounded w-1/2"></div>
+            <div className="h-48 bg-gray-200 rounded"></div>
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+              <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+            </div>
+          </div>
+        </section>
+      ) : <section className="flex-1">
         {units.length === 0 ? (
           <p>{t('no_houses_found') || 'No houses found.'}</p>
         ) : (
@@ -67,7 +109,6 @@ const HouseListPage = () => {
                 <li key={unit.unit_code} className="border p-4 rounded shadow flex flex-col justify-around cursor-pointer hover:bg-blue-50">
                   <h3 className="font-bold">{unit.project_name}</h3>
                   <div>
-                    <br />
 
                     <p>{t('type')}: {unit.unit_type}</p>
                     <p>{t('floor')}: {unit.floor}</p>
@@ -105,7 +146,7 @@ const HouseListPage = () => {
             </div>
           </>
         )}
-      </section>
+      </section>}
     </div>
   );
 };
