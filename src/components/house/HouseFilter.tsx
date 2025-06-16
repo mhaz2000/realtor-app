@@ -177,7 +177,7 @@ const HouseFilter = ({
   return (
     <aside
       className={`
-        h-h-[calc(h-screen-64px)] w-full sm:w-1/4 p-4 bg-white rounded shadow
+         max-h-max w-full sm:w-1/4 p-4 bg-white rounded shadow
         ${dir === 'rtl' ? 'sm:order-2' : 'sm:order-1'}
       `}
     >
@@ -262,8 +262,8 @@ const HouseFilter = ({
 
 
       {unitTypes && unitTypes.length > 0 && (
-        <div className="flex flex-col">
-          <label className="block font-medium">{t('unit_type')}</label>
+        <div className="flex flex-col mt-4">
+          <label className="block font-medium mb-2">{t('unit_type')}</label>
           <select
             className="block w-full border border-gray-300 rounded-md shadow-sm p-2"
             value={selectedUnitType ?? ''}

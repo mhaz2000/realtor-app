@@ -33,12 +33,12 @@ const HouseListPage = () => {
     setPage(1); // reset pagination
   };
 
-const updateUnitType = (value: string | null) => {
-  setFilters(prev => ({
-    ...prev,
-    unit_type: value === 'All' ? null : value,
-  }));
-};
+  const updateUnitType = (value: string | null) => {
+    setFilters(prev => ({
+      ...prev,
+      unit_type: value === 'All' ? null : value,
+    }));
+  };
 
   const fetchUnits = async () => {
     const filter: UnitFilter = {
@@ -106,21 +106,42 @@ const updateUnitType = (value: string | null) => {
           <>
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {units.map((unit) => (
-                <li key={unit.unit_code} className="border p-4 rounded shadow flex flex-col justify-around cursor-pointer hover:bg-blue-50">
-                  <h3 className="font-bold">{unit.project_name}</h3>
-                  <div>
-
-                    <p>{t('type')}: {unit.unit_type}</p>
-                    <p>{t('floor')}: {unit.floor}</p>
-                    <p>{t('area')}: {unit.total_area} sqm</p>
-                    <p>{t('view')}: {unit.view}</p>
-                    <p>{t('completion')}: {unit.completion_date}</p>
-                    <br />
+                <li
+                  key={unit.unit_code}
+                  className="bg-white border rounded-xl shadow hover:shadow-md overflow-hidden flex flex-col transition duration-200"
+                >
+                  {/* Default image */}
+                  <div className="h-48 bg-gray-100 flex items-center justify-center">
+                    <img
+                      src="/default-house.jpg"
+                      alt="House"
+                      className="object-cover h-full w-full"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = '/default-house.jpg'; // fallback if not loading
+                      }}
+                    />
                   </div>
-                  <p className="text-green-600 font-semibold">
-                    {t('price')}: ${unit.full_payment.toLocaleString()}
-                  </p>
+
+                  {/* Unit Info */}
+                  <div className="p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold text-blue-700 mb-1">{unit.project_name}</h3>
+                      <p className="text-sm text-gray-600">{t('type')}: {unit.unit_type}</p>
+                      <p className="text-sm text-gray-600">{t('floor')}: {unit.floor}</p>
+                      <p className="text-sm text-gray-600">{t('area')}: {unit.total_area} sqm</p>
+                      <p className="text-sm text-gray-600">{t('view')}: {unit.view}</p>
+                      <p className="text-sm text-gray-600">{t('completion')}: {unit.completion_date}</p>
+                    </div>
+
+                    <div className="mt-4">
+                      <p className="text-green-600 text-md font-bold">
+                        {t('price')}: {unit.full_payment.toLocaleString()} AED
+                      </p>
+                    </div>
+                  </div>
                 </li>
+
               ))}
             </ul>
 
