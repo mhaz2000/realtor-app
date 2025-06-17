@@ -15,7 +15,7 @@ const ChatDrawer = ({ isOpen, onClose, dir = 'ltr', children }: Props) => {
 
   return (
     <div
-      className={`fixed top-0 ${sideClass} h-full w-80 bg-white shadow-lg z-50 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : dir === 'rtl' ? '-translate-x-full' : 'translate-x-full'
+      className={`fixed top-0 ${sideClass} h-full w-1/3 bg-white shadow-lg z-50 transform transition-transform duration-300 ${isOpen ? 'translate-x-0' : dir === 'rtl' ? '-translate-x-full' : 'translate-x-full'
         }`}
     >
       <div className="flex justify-between items-center p-4 border-b">

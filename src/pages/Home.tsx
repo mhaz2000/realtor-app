@@ -1,5 +1,5 @@
 import HouseListPage from '../components/house/HouseList';
-import AIAssistantModal from '../components/house/AIAssistantModal';
+import AIAssistant from '../components/house/AIAssistant';
 
 const Home = () => {
 
@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <>
       <HouseListPage />
-      <AIAssistantModal/>
+      <AIAssistant/>
     </>
   );
 };

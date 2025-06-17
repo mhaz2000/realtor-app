@@ -4,7 +4,7 @@ import { useState } from 'react';
 import ChatDrawer from '../ai/ChatDrawer';
 import ChatBot from '../ai/ChatBot';
 
-const AIAssistantModal = () => {
+const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { i18n } = useTranslation();
   const dir = i18n.dir();
@@ -27,4 +27,4 @@ const AIAssistantModal = () => {
   );
 };
 
-export default AIAssistantModal;
+export default AIAssistant;
