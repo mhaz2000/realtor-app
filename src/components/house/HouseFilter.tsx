@@ -175,115 +175,117 @@ const HouseFilter = ({
   };
 
   return (
-    <aside
+    <div
       className={`
-         max-h-max w-full sm:w-1/4 p-4 bg-white rounded shadow
+         max-h-max w-full p-4 bg-white rounded shadow
         ${dir === 'rtl' ? 'sm:order-2' : 'sm:order-1'}
       `}
     >
       <h2 className="text-xl font-semibold mb-4">{t('filterHouses')}</h2>
 
-      {priceRange && (
-        <div className="space-y-2">
-          <label className="block font-medium">{t('priceRange')}</label>
+      <section className='flex flex-col items-center justify-around gap-4 sm:flex-row sm:gap-12'>
+        {priceRange && (
+          <div className="space-y-2 w-full">
+            <label className="block font-medium">{t('priceRange')}</label>
 
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              value={tempPriceMin}
-              placeholder={`${priceRange.min.toLocaleString()}`}
-              onChange={(e) => setTempPriceMin(e.target.value)}
-              onBlur={handleMinBlur}
-              className="w-full border rounded p-2"
-            />
-            <span>-</span>
-            <input
-              type="number"
-              value={tempPriceMax}
-              placeholder={`${priceRange.max.toLocaleString()}`}
-              onChange={(e) => setTempPriceMax(e.target.value)}
-              onBlur={handleMaxBlur}
-              className="w-full border rounded p-2"
-            />
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={tempPriceMin}
+                placeholder={`${priceRange.min.toLocaleString()}`}
+                onChange={(e) => setTempPriceMin(e.target.value)}
+                onBlur={handleMinBlur}
+                className="w-full border rounded p-2"
+              />
+              <span>-</span>
+              <input
+                type="number"
+                value={tempPriceMax}
+                placeholder={`${priceRange.max.toLocaleString()}`}
+                onChange={(e) => setTempPriceMax(e.target.value)}
+                onBlur={handleMaxBlur}
+                className="w-full border rounded p-2"
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {areaRange && (
-        <div className="space-y-2 mt-4">
-          <label className="block font-medium">{t('areaRange')}</label>
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              value={tempAreaMin}
-              placeholder={`${areaRange.min.toLocaleString()}`}
-              onChange={(e) => setTempAreaMin(e.target.value)}
-              onBlur={handleAreaBlur}
-              className="w-full border rounded p-2"
-            />
-            <span>-</span>
-            <input
-              type="number"
-              value={tempAreaMax}
-              placeholder={`${areaRange.max.toLocaleString()}`}
-              onChange={(e) => setTempAreaMax(e.target.value)}
-              onBlur={handleAreaBlur}
-              className="w-full border rounded p-2"
-            />
+        {areaRange && (
+          <div className="space-y-2 w-full">
+            <label className="block font-medium">{t('areaRange')}</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={tempAreaMin}
+                placeholder={`${areaRange.min.toLocaleString()}`}
+                onChange={(e) => setTempAreaMin(e.target.value)}
+                onBlur={handleAreaBlur}
+                className="w-full border rounded p-2"
+              />
+              <span>-</span>
+              <input
+                type="number"
+                value={tempAreaMax}
+                placeholder={`${areaRange.max.toLocaleString()}`}
+                onChange={(e) => setTempAreaMax(e.target.value)}
+                onBlur={handleAreaBlur}
+                className="w-full border rounded p-2"
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </section>
 
-      {/* Floor Range Filter */}
-      {floorRange && (
-        <div className="space-y-2 mt-4">
-          <label className="block font-medium">{t('floorRange')}</label>
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              value={tempFloorMin}
-              placeholder={`${floorRange.min}`}
-              onChange={(e) => setTempFloorMin(e.target.value)}
-              onBlur={handleFloorBlur}
-              className="w-full border rounded p-2"
-            />
-            <span>-</span>
-            <input
-              type="number"
-              value={tempFloorMax}
-              placeholder={`${floorRange.max}`}
-              onChange={(e) => setTempFloorMax(e.target.value)}
-              onBlur={handleFloorBlur}
-              className="w-full border rounded p-2"
-            />
+      <section className='flex flex-col items-center justify-around gap-4 mt-4 sm:flex-row sm:gap-12'>
+        {floorRange && (
+          <div className="space-y-2 w-full">
+            <label className="block font-medium">{t('floorRange')}</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={tempFloorMin}
+                placeholder={`${floorRange.min}`}
+                onChange={(e) => setTempFloorMin(e.target.value)}
+                onBlur={handleFloorBlur}
+                className="w-full border rounded p-2"
+              />
+              <span>-</span>
+              <input
+                type="number"
+                value={tempFloorMax}
+                placeholder={`${floorRange.max}`}
+                onChange={(e) => setTempFloorMax(e.target.value)}
+                onBlur={handleFloorBlur}
+                className="w-full border rounded p-2"
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {unitTypes && unitTypes.length > 0 && (
+          <div className="flex flex-col w-full">
+            <label className="block font-medium mb-2">{t('unit_type')}</label>
+            <select
+              className="block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              value={selectedUnitType ?? ''}
+              onChange={(e) => {
+                const value = e.target.value || null;
+                onUnitTypeChange?.(value);
+              }}
+            >
+              <option value="All">{t('All')}</option>
+              {unitTypes.map((type) => (
+                <option key={type} value={type}>
+                  {t(type)}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </section>
 
 
-      {unitTypes && unitTypes.length > 0 && (
-        <div className="flex flex-col mt-4">
-          <label className="block font-medium mb-2">{t('unit_type')}</label>
-          <select
-            className="block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            value={selectedUnitType ?? ''}
-            onChange={(e) => {
-              const value = e.target.value || null;
-              onUnitTypeChange?.(value);
-            }}
-          >
-            <option value="All">{t('All')}</option>
-            {unitTypes.map((type) => (
-              <option key={type} value={type}>
-                {t(type)}
-              </option>
-            ))}
-          </select>
-        </div>
-      )}
-
-
-    </aside>
+    </div>
   );
 };
 
