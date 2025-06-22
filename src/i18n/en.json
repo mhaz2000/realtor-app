@@ -27,5 +27,22 @@
   "areaRange": "Area Range",
   "floorRange": "Floor Range",
   "unit_type": "Unit Type",
-  "All": "All"
+  "All": "All",
+  "loading": "Loading...",
+  "unit_not_found": "Unit not found.",
+  "net_area": "Net Area",
+  "terrace_area": "Terrace Area",
+  "balcony_area": "Balcony Area",
+  "completion_date": "Completion Date",
+  "currency": "Currency",
+  "payment_info": "Payment Information",
+  "asking_price": "Asking Price",
+  "return_to_list": "Return to List",
+  "full_payment": "Full Payment",
+  "payment_20_percent": "20% Payment",
+  "payment_50_percent": "50% Payment",
+  "payment_70_percent": "70% Payment",
+  "unit_code": "Unit Code",
+  "status": "Status",
+  "price": "Price"
 }

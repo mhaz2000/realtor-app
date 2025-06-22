@@ -1,5 +1,5 @@
 import type { AreaRange, AreaStatistics, FloorRange, PriceRange, UnitType } from '../types/stats';
-import type { UnifiedUnit, UnitFilter } from '../types/unit';
+import type { UnifiedUnit, UnitDetail, UnitFilter } from '../types/unit';
 import { authorizedAxios } from './axios/index';
 
 export const getPriceRange = async (): Promise<PriceRange> => {
@@ -26,4 +26,9 @@ export const getFloorRange = async (): Promise<FloorRange> => {
 export const getUnitTypes = async (): Promise<string[]> => {
     const { data } = await authorizedAxios.get<UnitType>('available-unit-types');
     return data.available_unit_types;
+};
+
+export const getUnitDetail = async (unitCode: string): Promise<UnitDetail> => {
+    const { data } = await authorizedAxios.get<UnitDetail>(`unit-details/${unitCode}`);
+    return data;
 };

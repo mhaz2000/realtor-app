@@ -34,3 +34,36 @@ export type UnitFilter = {
     max_area: number | null;
     unit_type: string | null;
 }
+
+export type UnitDetail = {
+    unit_code: string;
+    unit_type: string;
+    floor: number;
+    view: string;
+    remarks: any;
+    status: string;
+    project_id: number,
+    project_name: string;
+    completion_date: string;
+    file_source: string;
+    asking_price: number | null;
+    payment_20_percent: number | null;
+    payment_50_percent: number | null;
+    payment_70_percent: number | null;
+    full_payment: number | null;
+    payment_structure_20_50_30: any;
+    payment_structure_50_20_30: any;
+    payment_structure_70_30: any;
+    total_area: number | null;
+    net_area: number | null;
+    terrace_area: number | null;
+    balcony_area: number | null;
+    unit_area: number | null;
+    currency: string;
+    area_unit: string;
+    unknown_data: any;
+    unit_created_at: string;
+    unit_updated_at: string;
+    details_created_at: string;
+    details_updated_at: string;
+}

@@ -4,6 +4,9 @@ import './index.css'
 import './i18n';
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom';
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
+
 
 
 createRoot(document.getElementById('root')!).render(

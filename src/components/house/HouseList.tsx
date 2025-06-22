@@ -3,6 +3,7 @@ import type { Unit, UnitFilter } from '../../types/unit';
 import { searchUnits } from '../../api/units';
 import HouseFilter from './HouseFilter';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 
 const HouseListPage = () => {
@@ -53,7 +54,7 @@ const HouseListPage = () => {
 
     try {
       setUintsLoading(true);
-      const data = await searchUnits(filter, 6, (page - 1) * 6);
+      const data = await searchUnits(filter, 8, (page - 1) * 8);
       setUnits(data.units);
       setHasMore(data.pagination.has_next);
     } catch (err) {
@@ -104,42 +105,42 @@ const HouseListPage = () => {
           <p>{t('no_houses_found') || 'No houses found.'}</p>
         ) : (
           <>
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {units.map((unit) => (
                 <li
                   key={unit.unit_code}
                   className="bg-white border rounded-xl shadow hover:shadow-md overflow-hidden flex flex-col transition duration-200"
                 >
                   {/* Default image */}
-                  <div className="h-48 bg-gray-100 flex items-center justify-center">
-                    <img
-                      src="/default-house.jpg"
-                      alt="House"
-                      className="object-cover h-full w-full"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = '/default-house.jpg'; // fallback if not loading
-                      }}
-                    />
-                  </div>
-
-                  {/* Unit Info */}
-                  <div className="p-4 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold text-blue-700 mb-1">{unit.project_name}</h3>
-                      <p className="text-sm text-gray-600">{t('type')}: {unit.unit_type}</p>
-                      <p className="text-sm text-gray-600">{t('floor')}: {unit.floor}</p>
-                      <p className="text-sm text-gray-600">{t('area')}: {unit.total_area} sqm</p>
-                      <p className="text-sm text-gray-600">{t('view')}: {unit.view}</p>
-                      <p className="text-sm text-gray-600">{t('completion')}: {unit.completion_date}</p>
+                  <Link to={`/house/${unit.unit_code}`} className="flex flex-col flex-1">
+                    <div className="h-48 bg-gray-100 flex items-center justify-center">
+                      <img
+                        src="/default-house.jpg"
+                        alt="House"
+                        className="object-cover h-full w-full"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/default-house.jpg'; // fallback if not loading
+                        }}
+                      />
                     </div>
 
-                    <div className="mt-4">
-                      <p className="text-green-600 text-md font-bold">
-                        {t('price')}: {unit.full_payment.toLocaleString()} AED
-                      </p>
+                    {/* Unit Info */}
+                    <div className="p-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        <h3 className="text-xl font-semibold text-blue-700 mb-1">{unit.project_name}</h3>
+                        <p className="text-md text-gray-600"><b>{t('type')}</b>: {unit.unit_type}</p>
+                        <p className="text-md text-gray-600"><b>{t('floor')}</b>: {unit.floor}</p>
+                        <p className="text-md text-gray-600"><b>{t('area')}</b>: {unit.total_area} sqm</p>
+                      </div>
+
+                      <div className="mt-4">
+                        <p className="text-green-600 text-lg font-bold">
+                          {t('price')}: {unit.full_payment.toLocaleString()} AED
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </li>
 
               ))}

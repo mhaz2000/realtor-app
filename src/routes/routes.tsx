@@ -4,6 +4,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import NotFound from '../pages/NotFound'; // optional
+import HouseDetailPage from '../pages/HouseDetailPage';
 
 const routes: RouteObject[] = [
   {
@@ -14,7 +15,11 @@ const routes: RouteObject[] = [
     path: '/',
     element: <ProtectedRoute />,
     children: [
-      { index: true, element: <Home /> }, // this is `/`
+      { index: true, element: <Home /> },
+      {
+        path: 'house/:unitCode', // <-- relative to `/`
+        element: <HouseDetailPage />,
+      }, // this is `/`
     ],
   },
   {

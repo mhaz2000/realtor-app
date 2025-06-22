@@ -105,7 +105,7 @@ const ChatBot = ({
                   {copiedIndex === idx ? (
                     <Check className="w-4 h-4 text-green-500" />
                   ) : (
-                    <Clipboard className="w-4 h-4 text-gray-500 hover:text-black" />
+                    <Clipboard className="w-4 h-4 text-blue-400 hover:text-blue-800" />
                   )}
                 </button>
               </div>
