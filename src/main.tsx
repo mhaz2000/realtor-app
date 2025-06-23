@@ -6,7 +6,7 @@ import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
-
+import 'leaflet/dist/leaflet.css';
 
 
 createRoot(document.getElementById('root')!).render(

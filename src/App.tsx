@@ -22,8 +22,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-      <main className="p-4">{routing}</main>
+      {!location.pathname.includes('login') ? <Header /> : <></>}
+      <main>{routing}</main>
       {location.pathname.includes('login') ? <></> : <AIAssistant />}
     </div>
   );

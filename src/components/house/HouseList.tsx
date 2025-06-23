@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 
 
 const HouseListPage = () => {
+
+
   const [units, setUnits] = useState<Unit[]>([]);
   const [filters, setFilters] = useState({
     price: { min: null as number | null, max: null as number | null },
@@ -55,7 +57,16 @@ const HouseListPage = () => {
     try {
       setUintsLoading(true);
       const data = await searchUnits(filter, 8, (page - 1) * 8);
-      setUnits(data.units);
+
+      const unitsWithImages = data.units.map(unit => {
+        const randomIndex = Math.floor(Math.random() * 12) + 1;
+        return {
+          ...unit,
+          imageSrc: `/dummy-houses/house${randomIndex}.jpg`,
+        };
+      });
+
+      setUnits(unitsWithImages);
       setHasMore(data.pagination.has_next);
     } catch (err) {
       console.error('Failed to fetch units:', err);
@@ -112,33 +123,43 @@ const HouseListPage = () => {
                   className="bg-white border rounded-xl shadow hover:shadow-md overflow-hidden flex flex-col transition duration-200"
                 >
                   {/* Default image */}
-                  <Link to={`/house/${unit.unit_code}`} className="flex flex-col flex-1">
-                    <div className="h-48 bg-gray-100 flex items-center justify-center">
-                      <img
-                        src="/default-house.jpg"
-                        alt="House"
-                        className="object-cover h-full w-full"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src = '/default-house.jpg'; // fallback if not loading
-                        }}
-                      />
-                    </div>
-
-                    {/* Unit Info */}
-                    <div className="p-4 flex-1 flex flex-col justify-between">
-                      <div>
-                        <h3 className="text-xl font-semibold text-blue-700 mb-1">{unit.project_name}</h3>
-                        <p className="text-md text-gray-600"><b>{t('type')}</b>: {unit.unit_type}</p>
-                        <p className="text-md text-gray-600"><b>{t('floor')}</b>: {unit.floor}</p>
-                        <p className="text-md text-gray-600"><b>{t('area')}</b>: {unit.total_area} sqm</p>
+                  <Link to={`/house/${unit.unit_code}?pic=${(unit as any).imageSrc}`} target='_blank' className="relative flex-1 group">
+                    <div className="relative h-96 overflow-hidden">
+                      <div className="w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105">
+                        <img
+                          src={(unit as any).imageSrc || '/default-house.jpg'}
+                          alt="House"
+                          className="object-cover h-full w-full"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = '/default-house.jpg';
+                          }}
+                        />
                       </div>
 
-                      <div className="mt-4">
-                        <p className="text-green-600 text-lg font-bold">
-                          {t('price')}: {unit.full_payment.toLocaleString()} AED
-                        </p>
+                      {/* Overlay Info */}
+                      <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-black/70 via-black/40 to-transparent text-white p-4 overflow-hidden">
+                        {/* Default view: name + price */}
+                        <div className="pt-8 group-hover:opacity-0 group-hover:translate-y-2 transition-all duration-500 ease-in-out">
+                          <h3 className="text-lg font-semibold">{unit.project_name}</h3>
+                          <hr className="border-t border-white/30 my-1" />
+                          <p className="text-green-400 text-md font-bold">
+                            {t('price')}: {unit.full_payment.toLocaleString()} AED
+                          </p>
+                        </div>
+
+                        {/* Hover view: full details */}
+                        <div className="absolute inset-0 p-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-in-out">
+                          <div className="space-y-1 text-sm">
+                            <h3 className="text-lg font-semibold">{unit.project_name}</h3>
+                            <p><b>{t('price')}</b>: {unit.full_payment.toLocaleString()} AED</p>
+                            <p><b>{t('type')}</b>: {unit.unit_type}</p>
+                            <p><b>{t('floor')}</b>: {unit.floor}</p>
+                            <p><b>{t('area')}</b>: {unit.total_area} sqm</p>
+                          </div>
+                        </div>
                       </div>
+
                     </div>
                   </Link>
                 </li>

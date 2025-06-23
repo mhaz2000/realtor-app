@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import NotFound from '../pages/NotFound'; // optional
 import HouseDetailPage from '../pages/HouseDetailPage';
+import Dashboard from '../pages/Dashboard';
 
 const routes: RouteObject[] = [
   {
@@ -19,7 +20,11 @@ const routes: RouteObject[] = [
       {
         path: 'house/:unitCode', // <-- relative to `/`
         element: <HouseDetailPage />,
-      }, // this is `/`
+      }, 
+      {
+        path: 'statistics', 
+        element: <Dashboard />,
+      }, 
     ],
   },
   {

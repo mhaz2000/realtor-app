@@ -9,9 +9,9 @@ const Home = () => {
   }, [])
 
   return (
-    <>
+    <div className='p-4'>
       <HouseListPage />
-    </>
+    </ div>
   );
 };
 

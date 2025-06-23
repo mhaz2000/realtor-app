@@ -16,7 +16,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: "url('/buildings.jpg')" }}
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-sm bg-white p-8 rounded-lg shadow space-y-6"

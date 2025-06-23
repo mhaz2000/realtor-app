@@ -66,4 +66,31 @@ export type UnitDetail = {
     unit_updated_at: string;
     details_created_at: string;
     details_updated_at: string;
+    location_info: LocationInfo;
+}
+
+
+export type UnitNearbyFacility = {
+    healthcare: Facility[];
+    education: Facility[];
+    transport: Facility[];
+}
+
+
+
+export type LocationInfo = {
+    nearby_facilities: UnitNearbyFacility;
+    project_location: Location;
+}
+
+export type Location = {
+    mapped_address: string;
+    longitude: number;
+    latitude: number;
+}
+
+export type Facility = {
+    name: string;
+    type: string;
+    distance_meters: number
 }
