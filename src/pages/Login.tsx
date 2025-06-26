@@ -4,6 +4,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import type { LoginRequest } from '../types/auth';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const Login = () => {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ const Login = () => {
   const { login, isPending, error } = useAuth();
 
   const onSubmit = async (data: LoginRequest) => {
-    await login(data);
+    await login(data, 'user');
   };
 
   return (
@@ -48,6 +49,10 @@ const Login = () => {
         <Button className='w-full' type="submit" isLoading={isPending}>
           {t('login')}
         </Button>
+
+        <div className='pt-8 flex justify-center'>
+          <LanguageSwitcher />
+        </div>
       </form>
     </div>
   );

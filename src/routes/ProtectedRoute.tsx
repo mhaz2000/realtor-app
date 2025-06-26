@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from 'react-router-dom';
+import Header from '../components/Header';
 
 const ProtectedRoute = () => {
   const token = localStorage.getItem('token');
@@ -7,8 +8,13 @@ const ProtectedRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <Header />
+
+      <Outlet />
+    </>
+  );
 };
 
 export default ProtectedRoute;
-    

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import type { UnitDetail } from '../types/unit';
 import { getUnitDetail } from '../api/units';
 import { Stethoscope, Pill, HelpCircle, School } from 'lucide-react';
-import LocationMap from '../components/LocationMap';
 
 const HouseDetailPage = () => {
     const { unitCode } = useParams<{ unitCode: string }>();
@@ -211,50 +210,52 @@ const HouseDetailPage = () => {
                 </section>
 
                 {/* Location Info */}
-                <section className="bg-white rounded-lg shadow-md p-6 mt-8">
-                    <h2 className="text-xl font-semibold mb-4 text-gray-800">{t('location_info')}</h2>
-                    <div className="space-y-2 text-gray-700 text-sm">
-                        <p>
-                            <b>{t('mapped_address')}:</b> {unit.location_info.project_location.mapped_address}
-                        </p>
-                        <p>
-                            <b>{t('coordinates')}:</b> {unit.location_info.project_location.latitude}, {unit.location_info.project_location.longitude}
-                        </p>
-                        <div>
-                            <LocationMap
-                                lat={unit.location_info.project_location.latitude}
-                                lng={unit.location_info.project_location.longitude}
-                                title={unit.project_name}
-                            />
+                {/* {(unit.location_info as any).address.includes(`I don't know man`) ? <></> :
+                    <section className="bg-white rounded-lg shadow-md p-6 mt-8">
+                        <h2 className="text-xl font-semibold mb-4 text-gray-800">{t('location_info')}</h2>
+                        <div className="space-y-2 text-gray-700 text-sm">
+                            <p>
+                                <b>{t('mapped_address')}:</b> {unit.location_info.project_location.mapped_address}
+                            </p>
+                            <p>
+                                <b>{t('coordinates')}:</b> {unit.location_info.project_location.latitude}, {unit.location_info.project_location.longitude}
+                            </p>
+                            <div>
+                                <LocationMap
+                                    lat={unit.location_info.project_location.latitude}
+                                    lng={unit.location_info.project_location.longitude}
+                                    title={unit.project_name}
+                                />
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>} */}
 
                 {/* Nearby Facilities */}
-                <section className="bg-white rounded-lg shadow-md p-6 mt-6">
-                    <h2 className="text-xl font-semibold mb-4 text-gray-800">{t('nearby_facilities')}</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-700">
-                        {['healthcare', 'education', 'transport'].map((category) => {
-                            const facilities = unit.location_info.nearby_facilities[category as keyof typeof unit.location_info.nearby_facilities];
-                            return (
-                                <div key={category}>
-                                    <h3 className="font-semibold text-blue-600 mb-2">{t(category)}</h3>
-                                    {facilities
-                                        .sort((a, b) => a.distance_meters - b.distance_meters)
-                                        .map((f, index) => (
-                                            <li key={index} className="flex items-center gap-1">
-                                                {getIconForFacility(category, f.type)}
-                                                <span className="flex-1">
-                                                    {f.name} – {f.distance_meters} m
-                                                </span>
-                                            </li>
-                                        ))}
-                                </div>
-                            );
-                        })}
+                {/* {(unit.location_info as any).address.includes(`I don't know man`) ? <></> :
+                    <section className="bg-white rounded-lg shadow-md p-6 mt-6">
+                        <h2 className="text-xl font-semibold mb-4 text-gray-800">{t('nearby_facilities')}</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-700">
+                            {['healthcare', 'education', 'transport'].map((category) => {
+                                const facilities = unit.location_info.nearby_facilities[category as keyof typeof unit.location_info.nearby_facilities];
+                                return (
+                                    <div key={category}>
+                                        <h3 className="font-semibold text-blue-600 mb-2">{t(category)}</h3>
+                                        {facilities
+                                            .sort((a, b) => a.distance_meters - b.distance_meters)
+                                            .map((f, index) => (
+                                                <li key={index} className="flex items-center gap-1">
+                                                    {getIconForFacility(category, f.type)}
+                                                    <span className="flex-1">
+                                                        {f.name} – {f.distance_meters} m
+                                                    </span>
+                                                </li>
+                                            ))}
+                                    </div>
+                                );
+                            })}
 
-                    </div>
-                </section>
+                        </div>
+                    </section>} */}
 
             </div>
         </div>

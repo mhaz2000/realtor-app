@@ -117,6 +117,7 @@ const Dashboard = () => {
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
+
             </div>
         </div>
     );

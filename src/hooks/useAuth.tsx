@@ -1,23 +1,29 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../api/auth';
+import { loginUser, loginAdmin } from '../api/auth';
 import type { LoginRequest } from '../types/auth';
 
 export const useAuth = () => {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const navigate = useNavigate();
 
-  const login = async (credentials: LoginRequest) => {
+  const login = async (credentials: LoginRequest, type: 'user' | 'admin' = 'user') => {
     setIsPending(true);
     setError(null);
-    
 
     try {
-      const token = await loginUser(credentials);
-      localStorage.setItem('token', token);
-      navigate('/');
+      let token: string;
+
+      if (type === 'admin') {
+        token = await loginAdmin(credentials);
+        localStorage.setItem('token', token);
+        navigate('/admin/dashboard');
+      } else {
+        token = await loginUser(credentials);
+        localStorage.setItem('token', token);
+        navigate('/');
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'loginFailed');
     } finally {
@@ -25,12 +31,20 @@ export const useAuth = () => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+  const logout = (type: 'user' | 'admin' = 'user') => {
+    if (type === 'admin') {
+      localStorage.removeItem('token');
+      navigate('/admin/login');
+    } else {
+      localStorage.removeItem('token');
+      navigate('/login');
+    }
   };
 
-  const isAuthenticated = Boolean(localStorage.getItem('token'));
+  const isAuthenticated = {
+    user: Boolean(localStorage.getItem('token')),
+    admin: Boolean(localStorage.getItem('token')),
+  };
 
   return {
     login,

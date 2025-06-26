@@ -1,13 +1,22 @@
 type StatCardProps = {
-  label: string;
-  value: string | number;
+  title: string;
+  value: number | string;
+  color?: 'blue' | 'green' | 'purple';
 };
 
-const StatCard = ({ label, value }: StatCardProps) => (
-  <div className="bg-white rounded-xl shadow p-4 flex flex-col items-start justify-center border-l-4 border-blue-600 hover:shadow-md transition duration-200">
-    <p className="text-sm text-gray-500">{label}</p>
-    <p className="text-xl font-bold text-gray-800 mt-1">{value}</p>
-  </div>
-);
+const colorMap: Record<string, string> = {
+  blue: 'bg-blue-100 text-blue-700 border-blue-300',
+  green: 'bg-green-100 text-green-700 border-green-300',
+  purple: 'bg-purple-100 text-purple-700 border-purple-300',
+};
+
+const StatCard = ({ title, value, color = 'blue' }: StatCardProps) => {
+  return (
+    <div className={`rounded-xl border p-6 shadow-sm transition hover:shadow-md ${colorMap[color]}`}>
+      <h3 className="text-sm font-medium mb-2 uppercase tracking-wide">{title}</h3>
+      <p className="text-2xl font-bold">{value}</p>
+    </div>
+  );
+};
 
 export default StatCard;

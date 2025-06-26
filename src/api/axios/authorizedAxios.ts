@@ -17,10 +17,14 @@ authorizedAxios.interceptors.response.use(
     error => {
         if (error.response?.status === 401 || error.response?.status === 403) {
             localStorage.removeItem('token');
-            window.location.href = '/login';
+
+            const referrer = document.referrer;
+            const redirectUrl = referrer.includes('/admin') ? '/admin/login' : '/login';
+
+            window.location.href = redirectUrl;
         }
+
         return Promise.reject(error);
     }
 );
-
 export default authorizedAxios;
