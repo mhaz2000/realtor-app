@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
+
 import {
   getAreaRange,
   getFloorRange,
   getPriceRange,
   getUnitTypes,
 } from '../../api/units';
+import RangeSliderSection from '../RangeSliderSection';
 
-type Range = { min: number; max: number };
 type HouseFilterProps = {
   minPrice: number | null;
   maxPrice: number | null;
@@ -27,73 +26,7 @@ type HouseFilterProps = {
   onUnitTypeChange?: (unitType: string | null) => void;
 };
 
-const SliderSection = ({
-  label,
-  range,
-  tempVals,
-  setTempVals,
-  onBlur,
-}: {
-  label: string;
-  range: Range;
-  tempVals: [string, string];
-  setTempVals: (vals: [string, string]) => void;
-  onBlur: () => void;
-  dir: 'ltr' | 'rtl';
-  t: (s: string) => string;
-}) => (
-  <div className="space-y-2 w-full">
-    <label className="block font-medium">{label}</label>
-    <div className="flex items-center gap-2">
-      <input
-        type="number"
-        className="w-full border rounded p-2"
-        value={tempVals[0]}
-        placeholder={`${range.min}`}
-        onChange={(e) =>
-          setTempVals([e.target.value, tempVals[1]])
-        }
-        onBlur={onBlur}
-      />
-      <span>-</span>
-      <input
-        type="number"
-        className="w-full border rounded p-2"
-        value={tempVals[1]}
-        placeholder={`${range.max}`}
-        onChange={(e) =>
-          setTempVals([tempVals[0], e.target.value])
-        }
-        onBlur={onBlur}
-      />
-    </div>
-    {/* rc-slider component */}
-    <Slider
-      range
-      min={range.min}
-      max={range.max}
-      value={[
-        parseInt(tempVals[0]) || range.min,
-        parseInt(tempVals[1]) || range.max,
-      ]}
-      onChange={(value) => {
-        const [min, max] = value as number[];
-        setTempVals([min.toString(), max.toString()]);
-      }}
-      onChangeComplete={(value) => {
-        const [min, max] = value as number[];
-        setTempVals([min.toString(), max.toString()]);
-        onBlur();
-      }}
-      allowCross={false}
-      styles={{
-        rail: { backgroundColor: '#d1d5db', height: 6 },
-        track: { backgroundColor: '#34D399', height: 6 },
-        handle: { borderColor: '#34D399', backgroundColor: 'white' },  // OK per type
-      }}
-    />
-  </div>
-);
+type Range = { min: number; max: number };
 
 const HouseFilter: React.FC<HouseFilterProps> = ({
   minPrice,
@@ -120,7 +53,6 @@ const HouseFilter: React.FC<HouseFilterProps> = ({
   const [tempArea, setTempArea] = useState<[string, string]>(['', '']);
   const [tempFloor, setTempFloor] = useState<[string, string]>(['', '']);
 
-  // Load base ranges once
   useEffect(() => {
     getPriceRange().then((d) => {
       const r = { min: d.min_price, max: d.max_price };
@@ -128,12 +60,14 @@ const HouseFilter: React.FC<HouseFilterProps> = ({
       onPriceChange(r.min, r.max);
       setTempPrice([r.min.toString(), r.max.toString()]);
     });
+
     getAreaRange().then((d) => {
       const r = { min: d.min_area, max: d.max_area };
       setAreaRange(r);
       onAreaChange(r.min, r.max);
       setTempArea([r.min.toString(), r.max.toString()]);
     });
+
     getFloorRange()
       .then((d) => {
         const r = { min: d.min_floor, max: d.max_floor };
@@ -141,102 +75,152 @@ const HouseFilter: React.FC<HouseFilterProps> = ({
         onFloorChange(r.min, r.max);
         setTempFloor([r.min.toString(), r.max.toString()]);
       })
-      .catch(() =>
-        setFloorRange({ min: 0, max: 30 })
-      );
+      .catch(() => setFloorRange({ min: 0, max: 30 }));
+
     getUnitTypes().then((data) => setUnitTypes(data));
   }, []);
 
-  // sync props
   useEffect(() => {
     if (priceRange) setTempPrice([minPrice?.toString() ?? '', maxPrice?.toString() ?? '']);
   }, [minPrice, maxPrice]);
+
   useEffect(() => {
     if (areaRange) setTempArea([minArea?.toString() ?? '', maxArea?.toString() ?? '']);
   }, [minArea, maxArea]);
+
   useEffect(() => {
     if (floorRange) setTempFloor([minFloor?.toString() ?? '', maxFloor?.toString() ?? '']);
   }, [minFloor, maxFloor]);
 
+  const [isOpen, setIsOpen] = useState(true);
+
+
   return (
-    <div className={`max-h-max w-full p-4 bg-white rounded shadow ${dir === 'rtl' ? 'sm:order-2' : 'sm:order-1'}`}>
-      <h2 className="text-xl font-semibold mb-4">{t('filterHouses')}</h2>
+    <div
+      className={`w-full px-6 py-6 bg-gradient-to-br from-blue-50 to-white rounded-2xl shadow-lg border border-blue-300 max-w-6xl mx-auto ${dir === 'rtl' ? 'sm:order-2' : 'sm:order-1'
+        }`}
+    >
+      <h2 className="text-3xl font-extrabold text-blue-800 mb-6 border-blue-400 pb-2 text-center">
+        {t('filterHouses')}
+      </h2>
 
-      <section className="flex flex-col items-center justify-around gap-4 sm:flex-row sm:gap-12">
-        {priceRange && (
-          <SliderSection
-            label={t('priceRange')}
-            range={priceRange}
-            tempVals={tempPrice}
-            setTempVals={setTempPrice}
-            onBlur={() => {
-              const [min, max] = tempPrice.map((v) => {
-                const num = parseInt(v, 10);
-                return isNaN(num) ? null : Math.min(Math.max(priceRange.min, num), priceRange.max);
-              }) as [number | null, number | null];
-              onPriceChange(min, max);
-            }}
-            dir={dir}
-            t={t}
-          />
-        )}
-        {areaRange && (
-          <SliderSection
-            label={t('areaRange')}
-            range={areaRange}
-            tempVals={tempArea}
-            setTempVals={setTempArea}
-            onBlur={() => {
-              const [min, max] = tempArea.map((v) => {
-                const num = parseInt(v, 10);
-                return isNaN(num) ? null : Math.min(Math.max(areaRange.min, num), areaRange.max);
-              }) as [number | null, number | null];
-              onAreaChange(min, max);
-            }}
-            dir={dir}
-            t={t}
-          />
-        )}
-      </section>
+      <div
+        className={`overflow-hidden transition-[max-height,opacity] duration-1000 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+      >
+        <div className="flex flex-wrap gap-6 justify-start">
+          {priceRange && (
+            <RangeSliderSection
+              label={t('priceRange')}
+              range={priceRange}
+              tempVals={tempPrice}
+              setTempVals={setTempPrice}
+              onBlur={() => {
+                const [min, max] = tempPrice.map((v) => {
+                  const num = parseFloat(v);
+                  return isNaN(num)
+                    ? null
+                    : Math.min(Math.max(priceRange.min, num), priceRange.max);
+                }) as [number | null, number | null];
+                onPriceChange(min, max);
+              }}
+            />
+          )}
 
-      <section className="flex flex-col items-center justify-around gap-4 mt-4 sm:flex-row sm:gap-12">
-        {floorRange && (
-          <SliderSection
-            label={t('floorRange')}
-            range={floorRange}
-            tempVals={tempFloor}
-            setTempVals={setTempFloor}
-            onBlur={() => {
-              const [min, max] = tempFloor.map((v) => {
-                const num = parseInt(v, 10);
-                return isNaN(num) ? null : Math.min(Math.max(floorRange.min, num), floorRange.max);
-              }) as [number | null, number | null];
-              onFloorChange(min, max);
-            }}
-            dir={dir}
-            t={t}
-          />
-        )}
-        {unitTypes.length > 0 && onUnitTypeChange && (
-          <div className="flex flex-col w-full">
-            <label className="block font-medium mb-2">{t('unit_type')}</label>
-            <select
-              className="block w-full border border-gray-300 rounded-md shadow-sm p-2"
-              value={selectedUnitType ?? ''}
-              onChange={(e) => onUnitTypeChange(e.target.value || null)}
-            >
-              <option value="All">{t('All')}</option>
-              {unitTypes.map((type) => (
-                <option key={type} value={type}>
-                  {t(type)}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-      </section>
+          {areaRange && (
+            <RangeSliderSection
+              label={t('areaRange')}
+              range={areaRange}
+              tempVals={tempArea}
+              setTempVals={setTempArea}
+              onBlur={() => {
+                const [min, max] = tempArea.map((v) => {
+                  const num = parseFloat(v);
+                  return isNaN(num)
+                    ? null
+                    : Math.min(Math.max(areaRange.min, num), areaRange.max);
+                }) as [number | null, number | null];
+                onAreaChange(min, max);
+              }}
+            />
+          )}
+
+          {floorRange && (
+            <RangeSliderSection
+              label={t('floorRange')}
+              range={floorRange}
+              tempVals={tempFloor}
+              setTempVals={setTempFloor}
+              onBlur={() => {
+                const [min, max] = tempFloor.map((v) => {
+                  const num = parseInt(v, 10);
+                  return isNaN(num)
+                    ? null
+                    : Math.min(Math.max(floorRange.min, num), floorRange.max);
+                }) as [number | null, number | null];
+                onFloorChange(min, max);
+              }}
+            />
+          )}
+
+          {unitTypes.length > 0 && onUnitTypeChange && (
+            <div className="flex-1 min-w-[280px] max-w-sm mx-auto p-5 bg-blue-50 rounded-2xl border border-blue-300 shadow-inner space-y-3">
+              <label className="block font-semibold text-blue-700 text-sm mb-1">{t('unit_type')}</label>
+              <div className="relative">
+                <select
+                  className="w-full appearance-none rounded-md border border-blue-400 px-3 py-2 text-sm text-blue-900 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm bg-white"
+                  value={selectedUnitType ?? ''}
+                  onChange={(e) => onUnitTypeChange(e.target.value || null)}
+                >
+                  <option value="All" className="text-blue-700">
+                    {t('All')}
+                  </option>
+                  {unitTypes.map((type) => (
+                    <option key={type} value={type} className="text-blue-900">
+                      {t(type)}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-blue-400 select-none">
+                  ▼
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }
+        }}
+        aria-expanded={isOpen}
+        aria-label={isOpen ? t('collapseFilters') || 'Collapse Filters' : t('expandFilters') || 'Expand Filters'}
+        className="flex justify-center cursor-pointer pt-4 select-none"
+      >
+        <svg
+          className={`w-6 h-6 text-blue-600 transition-transform duration-700 hover:text-blue-800 ${isOpen ? 'rotate-180' : 'rotate-0'
+            }`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </div>
     </div>
   );
+
+
+
 };
 
 export default HouseFilter;

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { UnitDetail } from '../types/unit';
 import { getUnitDetail } from '../api/units';
-import { Stethoscope, Pill, HelpCircle, School } from 'lucide-react';
+// import { Stethoscope, Pill, HelpCircle, School } from 'lucide-react';
 
 const HouseDetailPage = () => {
     const { unitCode } = useParams<{ unitCode: string }>();
@@ -27,19 +27,19 @@ const HouseDetailPage = () => {
     }, [unitCode]);
 
 
-    const getIconForFacility = (category: string, type: string) => {
-        if (category === 'healthcare') {
-            if (type.toLowerCase().includes('clinic')) return <Stethoscope className="w-4 h-4 inline mr-1 text-blue-600" />;
-            if (type.toLowerCase().includes('pharmacy')) return <Pill className="w-4 h-4 inline mr-1 text-green-600" />;
-            return <HelpCircle className="w-4 h-4 inline mr-1 text-gray-400" />;
-        }
+    // const getIconForFacility = (category: string, type: string) => {
+    //     if (category === 'healthcare') {
+    //         if (type.toLowerCase().includes('clinic')) return <Stethoscope className="w-4 h-4 inline mr-1 text-blue-600" />;
+    //         if (type.toLowerCase().includes('pharmacy')) return <Pill className="w-4 h-4 inline mr-1 text-green-600" />;
+    //         return <HelpCircle className="w-4 h-4 inline mr-1 text-gray-400" />;
+    //     }
 
-        if (category === 'education') {
-            return <School className="w-4 h-4 inline mr-1 text-purple-600" />;
-        }
+    //     if (category === 'education') {
+    //         return <School className="w-4 h-4 inline mr-1 text-purple-600" />;
+    //     }
 
-        return null;
-    };
+    //     return null;
+    // };
 
 
     if (loading)

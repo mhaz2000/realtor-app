@@ -1,4 +1,3 @@
-import Header from './components/Header';
 import { useLocation, useRoutes } from 'react-router-dom';
 import routes from './routes/routes';
 import { useTranslation } from 'react-i18next';
