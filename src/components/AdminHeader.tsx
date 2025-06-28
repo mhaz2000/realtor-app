@@ -13,9 +13,7 @@ const AdminHeader = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const isRtl = i18n.dir() === 'rtl';
 
-  const handleLogout = () => {
-    logout('admin');
-  };
+  const handleLogout = () => logout('admin');
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -28,40 +26,53 @@ const AdminHeader = () => {
   }, []);
 
   return (
-    <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-      <div className="flex items-center gap-5">
-        <Link to="/admin/dashboard">
-          <h1 className="text-xl font-bold text-blue-600">Realtor Platform</h1>
-        </Link>
-      </div>
+    <header className="bg-white shadow-sm border-b border-blue-100 px-6 py-4">
+      <div className="max-w-6xl mx-auto flex items-center justify-between relative">
 
-      <div className="relative" ref={menuRef}>
-        <button
-          onClick={() => setMenuOpen(prev => !prev)}
-          className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition"
-        >
-          <Settings className="w-5 h-5" />
-        </button>
+        {/* Left: Logo */}
+        <div className="flex-shrink-0">
+          <Link to="/admin/dashboard">
+            <h1 className="text-2xl font-extrabold text-blue-600 tracking-tight hover:text-green-600 transition">
+              Realtor Platform
+            </h1>
+          </Link>
+        </div>
 
-        {menuOpen && (
-          <div
-            className={`absolute mt-2 w-48 bg-white border rounded-lg shadow-md z-50 ${
-              isRtl ? 'left-0' : 'right-0'
-            }`}
+        {/* Right: Settings & Menu */}
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={() => setMenuOpen(prev => !prev)}
+            className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition"
+            title={t('settings')}
           >
-            <div className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition cursor-pointer">
-              <Languages className="w-4 h-4 text-gray-500" />
-              <LanguageSwitcher />
-            </div>
+            <Settings className="w-5 h-5" />
+          </button>
+
+          {menuOpen && (
             <div
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 hover:bg-red-50 text-red-600 cursor-pointer transition rounded-b-lg"
+              className={`absolute mt-3 w-52 bg-white border border-gray-200 rounded-xl shadow-lg z-50 ${
+                isRtl ? 'left-0' : 'right-0'
+              }`}
             >
-              <LogOut className="w-4 h-4" />
-              <span>{t('logout') || 'Sign out securely'}</span>
+              {/* Language Switcher */}
+              <div className="flex items-center gap-2 px-4 py-3 hover:bg-blue-50 transition cursor-pointer rounded-t-xl">
+                <Languages className="w-4 h-4 text-gray-500" />
+                <LanguageSwitcher />
+              </div>
+
+              {/* Logout */}
+              <div
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-3 hover:bg-red-50 text-red-600 cursor-pointer transition rounded-b-xl"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="text-sm font-semibold">
+                  {t('logout') || 'Sign out'}
+                </span>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </header>
   );

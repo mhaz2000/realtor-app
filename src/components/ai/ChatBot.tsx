@@ -89,7 +89,7 @@ const ChatBot = ({
             >
               <div className="relative group max-w-[80%]">
                 <div
-                  className={`p-2 rounded-lg break-words ${
+                  className={`p-2 rounded-lg break-words text-lg ${
                     msg.from === 'user' ? 'bg-blue-600 text-white' : 'bg-white border'
                   }`}
                 >

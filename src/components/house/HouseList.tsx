@@ -57,16 +57,7 @@ const HouseListPage = () => {
     try {
       setUintsLoading(true);
       const data = await searchUnits(filter, 8, (page - 1) * 8);
-
-      const unitsWithImages = data.units.map(unit => {
-        const randomIndex = Math.floor(Math.random() * 12) + 1;
-        return {
-          ...unit,
-          imageSrc: `/dummy-houses/house${randomIndex}.jpg`,
-        };
-      });
-
-      setUnits(unitsWithImages);
+      setUnits(data.units);
       setHasMore(data.pagination.has_next);
     } catch (err) {
       console.error('Failed to fetch units:', err);
@@ -85,7 +76,7 @@ const HouseListPage = () => {
 
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-col-reverse">
+    <div className="flex flex-col gap-4 sm:flex-col">
       <HouseFilter
         minPrice={filters.price.min}
         maxPrice={filters.price.max}
@@ -123,11 +114,11 @@ const HouseListPage = () => {
                   className="bg-white border rounded-xl shadow hover:shadow-md overflow-hidden flex flex-col transition duration-200"
                 >
                   {/* Default image */}
-                  <Link to={`/house/${unit.unit_code}?pic=${(unit as any).imageSrc}`} target='_blank' className="relative flex-1 group">
+                  <Link to={`/house/${unit.unit_code}`} target='_blank' className="relative flex-1 group">
                     <div className="relative h-96 overflow-hidden">
                       <div className="w-full h-full transition-transform duration-500 ease-in-out group-hover:scale-105">
                         <img
-                          src={(unit as any).imageSrc || '/default-house.jpg'}
+                          src={unit.main_photo_url || '/default-house.jpg'}
                           alt="House"
                           className="object-cover h-full w-full"
                           onError={(e) => {

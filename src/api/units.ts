@@ -32,3 +32,7 @@ export const getUnitDetail = async (unitCode: string): Promise<UnitDetail> => {
     const { data } = await authorizedAxios.get<UnitDetail>(`unit-details/${unitCode}`);
     return data;
 };
+
+export const toggleUnitLike = async (unitCode: string): Promise<void> => {
+    await authorizedAxios.post(`units/${unitCode}/like`);
+};

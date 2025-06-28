@@ -83,5 +83,14 @@
   "min_area": "أقل مساحة",
   "avg_area": "متوسط المساحة",
   "median_area": "المساحة الوسيطة",
-  "max_area": "أعلى مساحة"
+  "max_area": "أعلى مساحة",
+  "quick_links": "روابط سريعة",
+  "home": "الرئيسية",
+  "contact_us": "اتصل بنا",
+  "project_contact_summary": "تواصل مع المطور أو زر موقعهم لمزيد من المعلومات.",
+  "empowering_real_estate_tech": "تمكين العقارات بالتكنولوجيا",
+  "all_rights_reserved": "جميع الحقوق محفوظة",
+  "contact_info": "معلومات الاتصال",
+  "contact_details": "تفاصيل الاتصال",
+  "builder": "المطور"
 }

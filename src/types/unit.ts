@@ -7,6 +7,7 @@ export type Unit = {
     view: string;
     total_area: number;
     completion_date: number;
+    main_photo_url: string;
 }
 
 export type UnifiedUnit = {
@@ -38,6 +39,7 @@ export type UnitFilter = {
 export type UnitDetail = {
     unit_code: string;
     unit_type: string;
+    is_liked: boolean;
     floor: number;
     view: string;
     remarks: any;
@@ -69,22 +71,39 @@ export type UnitDetail = {
     location_info: LocationInfo;
 }
 
-
 export type UnitNearbyFacility = {
     healthcare: Facility[];
     education: Facility[];
     transport: Facility[];
+    restaurants: Facility[];
+    shopping: Facility[];
 }
-
 
 
 export type LocationInfo = {
-    nearby_facilities: UnitNearbyFacility;
-    project_location: Location;
+    coordinates: coordinate;
+    error: any;
+    photos: UnitPhoto;
+    total_facilities: number;
+    search_radius_meters: number;
+    project_details: ProjectLocationDetail;
+    facilities_data: UnitNearbyFacility;
 }
 
-export type Location = {
-    mapped_address: string;
+export type UnitPhoto = {
+    main_photo_url: string;
+    has_photos: boolean;
+}
+
+export type ProjectLocationDetail = {
+    address: string;
+    builder: string;
+    completion_date: string;
+    website: string | null;
+    contact_info: string;
+}
+
+export type coordinate = {
     longitude: number;
     latitude: number;
 }
@@ -92,5 +111,7 @@ export type Location = {
 export type Facility = {
     name: string;
     type: string;
-    distance_meters: number
+    phone: string | null;
+    address: string | null;
+    website: string | null;
 }

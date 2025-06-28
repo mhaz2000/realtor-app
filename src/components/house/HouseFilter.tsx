@@ -41,8 +41,7 @@ const HouseFilter: React.FC<HouseFilterProps> = ({
   onPriceChange,
   onUnitTypeChange,
 }) => {
-  const { t, i18n } = useTranslation();
-  const dir = i18n.dir() as 'ltr' | 'rtl';
+  const { t } = useTranslation();
 
   const [priceRange, setPriceRange] = useState<Range | null>(null);
   const [areaRange, setAreaRange] = useState<Range | null>(null);
@@ -97,15 +96,52 @@ const HouseFilter: React.FC<HouseFilterProps> = ({
 
   return (
     <div
-      className={`w-full px-6 py-6 bg-gradient-to-br from-blue-50 to-white rounded-2xl shadow-lg border border-blue-300 max-w-6xl mx-auto ${dir === 'rtl' ? 'sm:order-2' : 'sm:order-1'
-        }`}
+      className={`w-full px-6 py-6 rounded-2xl shadow-lg border border-blue-300 max-w-6xl mx-auto transition-all duration-700 ease-in-out 
+      ${isOpen ? 'bg-gradient-to-br from-blue-50 to-white' : 'bg-white'}`}
     >
-      <h2 className="text-3xl font-extrabold text-blue-800 mb-6 border-blue-400 pb-2 text-center">
-        {t('filterHouses')}
-      </h2>
-
+      {/* Header Section */}
       <div
-        className={`overflow-hidden transition-[max-height,opacity] duration-1000 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+        className="flex items-center justify-between cursor-pointer group"
+        onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-expanded={isOpen}
+        aria-label={isOpen ? t('collapseFilters') || 'Collapse Filters' : t('expandFilters') || 'Expand Filters'}
+      >
+        <h2 className="text-2xl sm:text-3xl font-extrabold text-blue-800 tracking-wide flex items-center gap-2">
+          <svg
+            className="w-6 h-6 text-blue-500"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2H3V4zM3 8h18v12a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" />
+          </svg>
+          {t('filterHouses')}
+        </h2>
+
+        {/* Toggle Icon */}
+        <svg
+          className={`w-6 h-6 text-blue-600 transition-transform duration-500 group-hover:text-blue-800 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </div>
+
+      {/* Filter Controls */}
+      <div
+        className={`transition-[max-height,opacity] duration-1000 ease-in-out overflow-hidden ${isOpen ? 'max-h-[1000px] opacity-100 mt-6' : 'max-h-0 opacity-0'
           }`}
       >
         <div className="flex flex-wrap gap-6 justify-start">
@@ -189,36 +225,8 @@ const HouseFilter: React.FC<HouseFilterProps> = ({
           )}
         </div>
       </div>
-
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={() => setIsOpen(!isOpen)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            setIsOpen(!isOpen);
-          }
-        }}
-        aria-expanded={isOpen}
-        aria-label={isOpen ? t('collapseFilters') || 'Collapse Filters' : t('expandFilters') || 'Expand Filters'}
-        className="flex justify-center cursor-pointer pt-4 select-none"
-      >
-        <svg
-          className={`w-6 h-6 text-blue-600 transition-transform duration-700 hover:text-blue-800 ${isOpen ? 'rotate-180' : 'rotate-0'
-            }`}
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path>
-        </svg>
-      </div>
     </div>
   );
-
 
 
 };

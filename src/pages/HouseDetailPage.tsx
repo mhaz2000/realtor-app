@@ -1,9 +1,22 @@
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { UnitDetail } from '../types/unit';
-import { getUnitDetail } from '../api/units';
-// import { Stethoscope, Pill, HelpCircle, School } from 'lucide-react';
+import type { UnitDetail, UnitNearbyFacility } from '../types/unit';
+import { getUnitDetail, toggleUnitLike } from '../api/units';
+import LocationMap from '../components/LocationMap';
+import {
+    Hospital,
+    GraduationCap,
+    Bus,
+    Utensils,
+    ShoppingBag,
+    Landmark,
+    Phone,
+    MapPin,
+    PhoneCall,
+    Heart
+} from 'lucide-react';
+import Modal from '../components/Modal';
 
 const HouseDetailPage = () => {
     const { unitCode } = useParams<{ unitCode: string }>();
@@ -11,10 +24,6 @@ const HouseDetailPage = () => {
     const [loading, setLoading] = useState(true);
     const { i18n, t } = useTranslation();
     const isRtl = i18n.dir() === 'rtl';
-
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const pic = queryParams.get('pic');
 
     useEffect(() => {
         if (!unitCode) return;
@@ -27,19 +36,43 @@ const HouseDetailPage = () => {
     }, [unitCode]);
 
 
-    // const getIconForFacility = (category: string, type: string) => {
-    //     if (category === 'healthcare') {
-    //         if (type.toLowerCase().includes('clinic')) return <Stethoscope className="w-4 h-4 inline mr-1 text-blue-600" />;
-    //         if (type.toLowerCase().includes('pharmacy')) return <Pill className="w-4 h-4 inline mr-1 text-green-600" />;
-    //         return <HelpCircle className="w-4 h-4 inline mr-1 text-gray-400" />;
-    //     }
+    const getFacilityIcon = (category: keyof UnitNearbyFacility) => {
+        switch (category) {
+            case 'healthcare':
+                return <Hospital className="w-4 h-4 text-red-600" />;
+            case 'education':
+                return <GraduationCap className="w-4 h-4 text-blue-600" />;
+            case 'transport':
+                return <Bus className="w-4 h-4 text-yellow-600" />;
+            case 'restaurants':
+                return <Utensils className="w-4 h-4 text-orange-600" />;
+            case 'shopping':
+                return <ShoppingBag className="w-4 h-4 text-green-600" />;
+            default:
+                return <Landmark className="w-4 h-4 text-gray-400" />;
+        }
+    };
 
-    //     if (category === 'education') {
-    //         return <School className="w-4 h-4 inline mr-1 text-purple-600" />;
-    //     }
+    const [isLiked, setIsLiked] = useState<boolean>(false);
 
-    //     return null;
-    // };
+    useEffect(() => {
+        if (unit) {
+            setIsLiked(unit.is_liked ?? false);
+        }
+    }, [unit]);
+
+    const handleToggleLike = async () => {
+        if (!unit) return;
+        try {
+            await toggleUnitLike(unit.unit_code);
+            setIsLiked((prev) => !prev);
+        } catch (err) {
+            console.error('Failed to toggle like:', err);
+        }
+    };
+
+    const [showContactModal, setShowContactModal] = useState(false);
+
 
 
     if (loading)
@@ -67,7 +100,7 @@ const HouseDetailPage = () => {
             className="min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: "url('/buildings.jpg')" }}
         >
-            <div className="max-w-5xl mx-auto px-6 py-8 space-y-8 mt-5 bg-white rounded-md">
+            <div className="max-w-5xl mx-auto px-6 py-8 space-y-8 my-5 bg-white rounded-md">
 
                 {/* Return button */}
                 <Link
@@ -102,22 +135,48 @@ const HouseDetailPage = () => {
                     {t('return_to_list') || 'Return to List'}
                 </Link>
 
-                <h1 className="text-3xl font-extrabold text-blue-700">{unit.project_name}</h1>
+                <div className="flex flex-wrap justify-between items-center gap-4">
+                    <h1 className="text-3xl font-extrabold text-blue-700">{unit.project_name}</h1>
+
+                    <button
+                        onClick={() => setShowContactModal(true)}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-green-500 text-white text-sm font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300"
+                    >
+                        <PhoneCall className="w-4 h-4" />
+                        {t('contact_info') || 'Contact Info'}
+                    </button>
+                </div>
 
                 {/* Main grid: Image + Info */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* Image */}
-                    <div className="md:col-span-1 rounded-lg overflow-hidden shadow-md h-64 bg-gray-100">
+                    <div className="relative h-64 rounded-lg overflow-hidden shadow-md bg-gray-100">
                         <img
-                            src={pic || '/default-house.jpg'}
-                            alt={t('unit_code') + ': ' + unit.unit_code}
+                            src={
+                                unit.location_info?.photos?.has_photos && unit.location_info.photos.main_photo_url
+                                    ? unit.location_info.photos.main_photo_url
+                                    : '/default-house.jpg'
+                            }
+                            alt={`${t('unit_code')}: ${unit.unit_code}`}
                             className="w-full h-full object-cover"
                             onError={(e) => {
                                 const target = e.target as HTMLImageElement;
                                 target.src = '/default-house.jpg';
                             }}
                         />
+
+                        <button
+                            onClick={handleToggleLike}
+                            className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md hover:bg-blue-50 transition"
+                            aria-label={isLiked ? 'Unlike' : 'Like'}
+                        >
+                            <Heart
+                                className={`w-6 h-6 transition-colors ${isLiked ? 'fill-red-500 stroke-red-500' : 'stroke-gray-400'
+                                    }`}
+                            />
+                        </button>
                     </div>
+
 
                     {/* Unit Details */}
                     <div className="md:col-span-2 grid grid-cols-2 gap-6 bg-white rounded-lg shadow-md p-6">
@@ -209,55 +268,113 @@ const HouseDetailPage = () => {
                     </div>
                 </section>
 
-                {/* Location Info */}
-                {/* {(unit.location_info as any).address.includes(`I don't know man`) ? <></> :
+                {unit.location_info?.project_details?.address ? (
                     <section className="bg-white rounded-lg shadow-md p-6 mt-8">
                         <h2 className="text-xl font-semibold mb-4 text-gray-800">{t('location_info')}</h2>
                         <div className="space-y-2 text-gray-700 text-sm">
                             <p>
-                                <b>{t('mapped_address')}:</b> {unit.location_info.project_location.mapped_address}
+                                <b>{t('mapped_address')}:</b> {unit.location_info.project_details.address}
                             </p>
                             <p>
-                                <b>{t('coordinates')}:</b> {unit.location_info.project_location.latitude}, {unit.location_info.project_location.longitude}
+                                <b>{t('coordinates')}:</b> {unit.location_info.coordinates.latitude}, {unit.location_info.coordinates.longitude}
                             </p>
-                            <div>
+                            <div className="h-72">
                                 <LocationMap
-                                    lat={unit.location_info.project_location.latitude}
-                                    lng={unit.location_info.project_location.longitude}
+                                    lat={unit.location_info.coordinates.latitude}
+                                    lng={unit.location_info.coordinates.longitude}
                                     title={unit.project_name}
                                 />
                             </div>
                         </div>
-                    </section>} */}
+                    </section>
+                ) : null}
+
 
                 {/* Nearby Facilities */}
-                {/* {(unit.location_info as any).address.includes(`I don't know man`) ? <></> :
+                {unit.location_info?.facilities_data ? (
                     <section className="bg-white rounded-lg shadow-md p-6 mt-6">
                         <h2 className="text-xl font-semibold mb-4 text-gray-800">{t('nearby_facilities')}</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-700">
-                            {['healthcare', 'education', 'transport'].map((category) => {
-                                const facilities = unit.location_info.nearby_facilities[category as keyof typeof unit.location_info.nearby_facilities];
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-sm text-gray-700">
+                            {(['healthcare', 'education', 'transport', 'restaurants', 'shopping'] as const).map((category) => {
+                                const facilities = unit.location_info.facilities_data[category];
+                                if (!facilities || facilities.length === 0) return null;
+
                                 return (
                                     <div key={category}>
-                                        <h3 className="font-semibold text-blue-600 mb-2">{t(category)}</h3>
-                                        {facilities
-                                            .sort((a, b) => a.distance_meters - b.distance_meters)
-                                            .map((f, index) => (
-                                                <li key={index} className="flex items-center gap-1">
-                                                    {getIconForFacility(category, f.type)}
-                                                    <span className="flex-1">
-                                                        {f.name} – {f.distance_meters} m
-                                                    </span>
-                                                </li>
-                                            ))}
+                                        <h3 className="font-semibold text-blue-600 mb-2 flex items-center gap-1">
+                                            {getFacilityIcon(category)}
+                                            {t(category)}
+                                        </h3>
+                                        <ul className="space-y-2">
+                                            {facilities
+                                                .sort((a, b) => a.name.localeCompare(b.name))
+                                                .map((f, index) => (
+                                                    <li key={index} className="flex gap-2">
+                                                        <MapPin className="w-4 h-4 mt-0.5 text-gray-500" />
+                                                        <div>
+                                                            <div className="font-medium">{f.name}</div>
+                                                            <div className="text-gray-600 text-xs">
+                                                                {f.address ?? t('address_not_available')}
+                                                                {f.phone && (
+                                                                    <div className="flex items-center gap-1">
+                                                                        <Phone className="w-3 h-3 text-gray-400" />
+                                                                        {f.phone}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                ))}
+                                        </ul>
                                     </div>
                                 );
                             })}
-
                         </div>
-                    </section>} */}
-
+                    </section>
+                ) : null}
             </div>
+
+            <Modal isOpen={showContactModal} onClose={() => setShowContactModal(false)}>
+                <div className="text-center space-y-6">
+                    <div className="space-y-1">
+                        <h2 className="text-2xl font-bold text-blue-700">{t('contact_details') || 'Contact Details'}</h2>
+                        <p className="text-sm text-gray-500">{t('project_contact_summary') || 'Get in touch with the builder or visit their website for more info.'}</p>
+                    </div>
+
+                    <div className="bg-blue-50 p-5 rounded-xl shadow-inner text-left space-y-4">
+                        <div className="flex items-center gap-3">
+                            <span className="font-semibold text-gray-600">{t('builder') || 'Builder'}:</span>
+                            <span className="text-blue-900 font-medium">
+                                {unit.location_info?.project_details?.builder || '-'}
+                            </span>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                            <span className="font-semibold text-gray-600">{t('contact_info') || 'Contact Info'}:</span>
+                            {unit.location_info?.project_details?.contact_info ? (
+                                <a
+                                    href={unit.location_info.project_details.contact_info}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-blue-600 underline hover:text-blue-800 break-all"
+                                >
+                                    {unit.location_info.project_details.contact_info}
+                                </a>
+                            ) : (
+                                <span className="text-gray-500">-</span>
+                            )}
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={() => setShowContactModal(false)}
+                        className="mt-2 inline-flex items-center justify-center px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+                    >
+                        {t('close') || 'Close'}
+                    </button>
+                </div>
+            </Modal>
+
         </div>
     );
 };

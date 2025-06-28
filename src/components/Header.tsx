@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect, useRef, useState } from 'react';
-import { Settings, LogOut, Languages } from 'lucide-react';
+import { Settings, LogOut, Languages, BarChart2 } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const Header = () => {
@@ -13,9 +13,7 @@ const Header = () => {
   const menuRef = useRef<HTMLDivElement>(null);
   const isRtl = i18n.dir() === 'rtl';
 
-  const handleLogout = () => {
-    logout('user'); 
-  };
+  const handleLogout = () => logout('user');
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -28,43 +26,61 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-      <div className="flex items-center gap-5">
-        <Link to="/">
-          <h1 className="text-xl font-bold text-blue-600">Realtor Platform</h1>
-        </Link>
-        <Link to="/statistics" className="text-gray-700 hover:text-blue-600 font-medium">
-          {t('statistics')}
-        </Link>
-      </div>
+    <header className="bg-white shadow-sm border-b border-blue-100 px-6 py-4">
+      <div className="max-w-6xl mx-auto flex items-center justify-between relative">
 
-      <div className="relative" ref={menuRef}>
-        <button
-          onClick={() => setMenuOpen(prev => !prev)}
-          className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition"
-        >
-          <Settings className="w-5 h-5" />
-        </button>
+        {/* Left: Logo */}
+        <div className="flex-shrink-0">
+          <Link to="/">
+            <h1 className="text-2xl font-extrabold text-blue-600 tracking-tight hover:text-green-600 transition">
+              Realtor Platform
+            </h1>
+          </Link>
+        </div>
 
-        {menuOpen && (
-          <div
-            className={`absolute mt-2 w-48 bg-white border rounded-lg shadow-md z-50 ${
-              isRtl ? 'left-0' : 'right-0'
-            }`}
+        {/* Center: Statistics link */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <Link
+            to="/statistics"
+            className="flex items-center gap-1 px-4 py-2 bg-blue-50 text-blue-700 rounded-md font-semibold text-sm hover:bg-blue-100 hover:text-green-600 transition"
           >
-            <div className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 transition cursor-pointer">
-              <Languages className="w-4 h-4 text-gray-500" />
-              <LanguageSwitcher />
-            </div>
+            <BarChart2 className="w-4 h-4" />
+            {t('statistics')}
+          </Link>
+        </div>
+
+        {/* Right: Settings */}
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={() => setMenuOpen(prev => !prev)}
+            className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition"
+            title={t('settings')}
+          >
+            <Settings className="w-5 h-5" />
+          </button>
+
+          {menuOpen && (
             <div
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 hover:bg-red-50 text-red-600 cursor-pointer transition rounded-b-lg"
+              className={`absolute mt-3 w-52 bg-white border border-gray-200 rounded-xl shadow-lg z-50 ${
+                isRtl ? 'left-0' : 'right-0'
+              }`}
             >
-              <LogOut className="w-4 h-4" />
-              <span>{t('logout') || 'Sign out securely'}</span>
+              <div className="flex items-center gap-2 px-4 py-3 hover:bg-blue-50 transition cursor-pointer rounded-t-xl">
+                <Languages className="w-4 h-4 text-gray-500" />
+                <LanguageSwitcher />
+              </div>
+              <div
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-3 hover:bg-red-50 text-red-600 cursor-pointer transition rounded-b-xl"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="text-sm font-semibold">
+                  {t('logout') || 'Sign out'}
+                </span>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </header>
   );
