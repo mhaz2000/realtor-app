@@ -92,5 +92,8 @@
   "all_rights_reserved": "جميع الحقوق محفوظة",
   "contact_info": "معلومات الاتصال",
   "contact_details": "تفاصيل الاتصال",
+  "parking_slots": "عدد مواقف السيارات",
+  "static_filter": "فلتر ثابت",
+  "enter_view": "أدخل نوع الإطلالة...",
   "builder": "المطور"
 }

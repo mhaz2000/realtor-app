@@ -5,6 +5,7 @@ import type { ChatInput, ChatResponse } from '../../types/chatbot';
 import { ask } from '../../api/chatbot';
 
 import { loadMessages, saveMessages } from '../../utils/chatPersistence';
+import { formatChatText } from '../../utils/formatChatText';
 
 const ChatBot = ({
   containerHeight = 500,
@@ -83,22 +84,18 @@ const ChatBot = ({
           messages.map((msg, idx) => (
             <div
               key={idx}
-              className={`mb-2 flex ${
-                msg.from === 'user' ? 'justify-end' : 'justify-start'
-              }`}
+              className={`mb-2 flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'
+                }`}
             >
               <div className="relative group max-w-[80%]">
                 <div
-                  className={`p-2 rounded-lg break-words text-lg ${
-                    msg.from === 'user' ? 'bg-blue-600 text-white' : 'bg-white border'
-                  }`}
-                >
-                  {msg.text}
-                </div>
+                  className={`p-2 rounded-lg break-words text-lg ${msg.from === 'user' ? 'bg-blue-600 text-white' : 'bg-white border text-gray-800'
+                    }`}
+                  dangerouslySetInnerHTML={{ __html: formatChatText(msg.text) }}
+                />
                 <button
-                  className={`absolute ${
-                    msg.from === 'user' ? 'end-0' : 'start-0'
-                  } opacity-0 group-hover:opacity-100 transition-opacity`}
+                  className={`absolute ${msg.from === 'user' ? 'end-0' : 'start-0'
+                    } opacity-0 group-hover:opacity-100 transition-opacity`}
                   onClick={() => copyToClipboard(msg.text, idx)}
                   title="Copy"
                 >

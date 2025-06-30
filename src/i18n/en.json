@@ -93,5 +93,8 @@
   "min_area": "Min Area",
   "avg_area": "Avg Area",
   "median_area": "Median Area",
-  "max_area": "Max Area"
+  "max_area": "Max Area",
+  "static_filter": "Static Filter",
+  "parking_slots": "Parking Slots",
+  "enter_view": "Enter view type..."
 }

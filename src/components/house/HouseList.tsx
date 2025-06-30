@@ -15,6 +15,8 @@ const HouseListPage = () => {
     area: { min: null as number | null, max: null as number | null },
     floor: { min: null as number | null, max: null as number | null },
     unit_type: null as string | null,
+    view: null as string | null,
+    parkingSlot: { min: null as number | null, max: null as number | null }
   });
 
 
@@ -25,7 +27,7 @@ const HouseListPage = () => {
   const [unitsLoading, setUintsLoading] = useState(true);
 
   const updateRange = (
-    key: 'price' | 'area' | 'floor',
+    key: 'price' | 'area' | 'floor' | 'parking',
     min: number | null,
     max: number | null
   ) => {
@@ -40,6 +42,13 @@ const HouseListPage = () => {
     setFilters(prev => ({
       ...prev,
       unit_type: value === 'All' ? null : value,
+    }));
+  };
+
+  const updateView = (value: string | null) => {
+    setFilters(prev => ({
+      ...prev,
+      view: value,
     }));
   };
 
@@ -85,10 +94,15 @@ const HouseListPage = () => {
         minFloor={filters.floor.min}
         maxFloor={filters.floor.max}
         selectedUnitType={filters.unit_type}
+        maxParking={filters.parkingSlot.max}
+        minParking={filters.parkingSlot.min}
+        viewFilter={filters.view}
         onPriceChange={(min, max) => updateRange('price', min, max)}
         onAreaChange={(min, max) => updateRange('area', min, max)}
         onFloorChange={(min, max) => updateRange('floor', min, max)}
+        onParkingChange={(min, max) => updateRange('parking', min, max)}
         onUnitTypeChange={(type) => updateUnitType(type)}
+        onViewFilterChange={(view) => updateView(view)}
       />
       {unitsLoading ? (
         <section className="flex-1 p-4">
