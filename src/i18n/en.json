@@ -96,5 +96,21 @@
   "max_area": "Max Area",
   "static_filter": "Static Filter",
   "parking_slots": "Parking Slots",
-  "enter_view": "Enter view type..."
+  "enter_view": "Enter view type...",
+  "upload_excel_template": "Upload Excel Template",
+  "excel_template_management": "Excel Template Management",
+  "download_excel_template": "Download Excel Template",
+  "downloading": "Downloading...",
+  "creation_date": "Creation Date",
+  "address": "Address",
+  "enter_address": "Enter address",
+  "select_excel_file": "Select Excel File",
+  "upload_excel_file": "Upload Excel File",
+  "uploading": "Uploading...",
+  "upload_success": "File uploaded successfully!",
+  "upload_failed": "Upload failed. Please try again.",
+  "please_select_file": "Please select a file to upload.",
+  "please_fill_all_fields": "Please fill all fields.",
+  "download_failed": "Failed to download template",
+  "drag_drop_or_click": "Drag & drop your file here, or click to select"
 }

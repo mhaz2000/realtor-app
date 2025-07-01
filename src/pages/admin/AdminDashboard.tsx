@@ -1,8 +1,8 @@
 // src/pages/admin/DashboardAdmin.tsx
 
 import { useTranslation } from 'react-i18next';
-import AdminDashboardStats from '../components/admin/AdminDashboardStats';
-import AdminLocationSearch from '../components/admin/AdminLocationSearch';
+import AdminDashboardStats from '../../components/admin/AdminDashboardStats';
+import AdminLocationSearch from '../../components/admin/AdminLocationSearch';
 
 const DashboardAdmin = () => {
   const { t } = useTranslation();

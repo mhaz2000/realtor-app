@@ -95,5 +95,21 @@
   "parking_slots": "عدد مواقف السيارات",
   "static_filter": "فلتر ثابت",
   "enter_view": "أدخل نوع الإطلالة...",
-  "builder": "المطور"
+  "builder": "المطور",
+  "upload_excel_template": "رفع قالب إكسل",
+  "excel_template_management": "إدارة قالب الإكسل",
+  "download_excel_template": "تحميل قالب الإكسل",
+  "downloading": "جارٍ التحميل...",
+  "creation_date": "تاريخ الإنشاء",
+  "address": "العنوان",
+  "enter_address": "أدخل العنوان",
+  "select_excel_file": "اختر ملف الإكسل",
+  "upload_excel_file": "رفع ملف الإكسل",
+  "uploading": "جارٍ الرفع...",
+  "upload_success": "تم رفع الملف بنجاح!",
+  "drag_drop_or_click": "اسحب الملف هنا أو اضغط لاختياره",
+  "upload_failed": "فشل الرفع. الرجاء المحاولة مرة أخرى.",
+  "please_select_file": "يرجى اختيار ملف للرفع.",
+  "please_fill_all_fields": "يرجى ملء جميع الحقول.",
+  "download_failed": "فشل تحميل القالب"
 }

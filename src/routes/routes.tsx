@@ -6,9 +6,10 @@ import Login from '../pages/Login';
 import NotFound from '../pages/NotFound'; // optional
 import HouseDetailPage from '../pages/HouseDetailPage';
 import Dashboard from '../pages/Dashboard';
-import AdminLoginPage from '../pages/AdminLogin';
-import AdminDashboard from '../pages/AdminDashboard';
+import AdminLoginPage from '../pages/admin/AdminLogin';
+import AdminDashboard from '../pages/admin/AdminDashboard';
 import ProtectedAdminRoute from './ProtectedAdminRoute';
+import UploadExcelPage from '../pages/admin/UploadExcelPage';
 
 const routes: RouteObject[] = [
   {
@@ -23,7 +24,8 @@ const routes: RouteObject[] = [
     path: '/admin',
     element: <ProtectedAdminRoute />,
     children: [
-      { path: 'dashboard', element: <AdminDashboard /> }
+      { path: 'dashboard', element: <AdminDashboard /> },
+      { path: 'excel-upload', element: <UploadExcelPage /> }
     ]
   },
   {

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { useState, useRef, useEffect } from 'react';
-import { Settings, LogOut, Languages } from 'lucide-react';
+import { Settings, LogOut, Languages, Upload } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 
 const AdminHeader = () => {
@@ -38,7 +38,18 @@ const AdminHeader = () => {
           </Link>
         </div>
 
-        {/* Right: Settings & Menu */}
+        {/* Center: Upload Excel Template */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <Link
+            to="/admin/excel-upload"
+            className="flex items-center gap-1 px-4 py-2 bg-blue-50 text-blue-700 rounded-md font-semibold text-sm hover:bg-blue-100 hover:text-green-600 transition"
+          >
+            <Upload className="w-4 h-4" />
+            {t('upload_excel_template') || 'Upload Excel'}
+          </Link>
+        </div>
+
+        {/* Right: Settings Menu */}
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setMenuOpen(prev => !prev)}

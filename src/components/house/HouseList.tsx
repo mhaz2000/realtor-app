@@ -4,6 +4,7 @@ import { searchUnits } from '../../api/units';
 import HouseFilter from './HouseFilter';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import HouseListPagination from './HouseListPagination';
 
 
 const HouseListPage = () => {
@@ -173,25 +174,12 @@ const HouseListPage = () => {
             </ul>
 
             {/* Pagination */}
-            <div className="mt-6 flex justify-center items-center gap-4">
-              <button
-                onClick={handlePrevious}
-                disabled={page === 1}
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-              >
-                {t('previous') || 'Previous'}
-              </button>
-
-              <span className="text-sm text-gray-600">{t('page') || 'Page'} {page}</span>
-
-              <button
-                onClick={handleNext}
-                disabled={!hasMore}
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
-              >
-                {t('next') || 'Next'}
-              </button>
-            </div>
+            <HouseListPagination
+              page={page}
+              hasMore={hasMore}
+              onNext={handleNext}
+              onPrevious={handlePrevious}
+            />
           </>
         )}
       </section>}

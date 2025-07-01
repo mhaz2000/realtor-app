@@ -5,3 +5,31 @@ export const SendLocation = async (input: AdminLocationEntry): Promise<AdminLoca
     const { data } = await authorizedAxios.post<AdminLocation>('admin/location/search', input);
     return data;
 };
+
+export const DownloadExcelTemplate = async (): Promise<Blob> => {
+  const response = await authorizedAxios.get('/admin/template/download', {
+    responseType: 'blob',
+  });
+  return response.data; // returns Blob representing the file content
+};
+
+export const UploadExcel = async (
+    creationDate: string,
+    address: string,
+    file: File
+): Promise<void> => {
+    const formData = new FormData();
+    formData.append('creationDate', creationDate);
+    formData.append('address', address);
+    formData.append('file', file); // 'file' is the key your backend expects
+
+    await authorizedAxios.post(
+        'admin/data/upload',
+        formData,
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data', // important for file uploads
+            },
+        }
+    );
+};
