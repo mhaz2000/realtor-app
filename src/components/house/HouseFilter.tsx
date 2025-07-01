@@ -242,7 +242,7 @@ const HouseFilter: React.FC<HouseFilterProps> = ({
         {/* Unit Type */}
         {unitTypes.length > 0 && onUnitTypeChange && (
           <div className="bg-blue-50 p-4 rounded-lg border border-blue-200 shadow-sm">
-            <label className="block text-sm font-medium text-blue-700 font-semibold mb-2">{t('unit_type')}</label>
+            <label className="block text-sm text-blue-700 font-semibold mb-2">{t('unit_type')}</label>
             <select
               className="w-full border border-blue-400 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={selectedUnitType ?? ''}
