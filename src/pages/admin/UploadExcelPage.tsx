@@ -48,7 +48,7 @@ const UploadExcelPage: React.FC = () => {
         }
         try {
             setLoading(true);
-            await UploadExcel(creationDate ? creationDate.toISOString().split('T')[0] : '', address, file);
+            await UploadExcel(creationDate ? creationDate.toISOString().split('T')[0].replace('-', '/').replace('-', '/') : '', address, file);
             setUploadSuccess(true);
             setFile(null);
             setCreationDate(new Date());

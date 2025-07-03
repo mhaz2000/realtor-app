@@ -14,12 +14,12 @@ export const DownloadExcelTemplate = async (): Promise<Blob> => {
 };
 
 export const UploadExcel = async (
-    creationDate: string,
+    completion_date : string,
     address: string,
     file: File
 ): Promise<void> => {
     const formData = new FormData();
-    formData.append('creationDate', creationDate);
+    formData.append('completion_date', completion_date );
     formData.append('address', address);
     formData.append('file', file); // 'file' is the key your backend expects
 
